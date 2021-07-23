@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+annotations:
+  app.openshift.io/runtime: nodejs
+name: express-sample-app-pipeline
+spec:
+workspaces:
+  - name: pipeline-shared-data
+    description: |
+      This workspace stores the cloned repository and is available to all steps
+tasks:
+  - name: clone-repository
+    taskRef:
+      kind: ClusterTask
+      name: git-clone
+    params:
+      - name: url
+        value: https://github.com/ZoeOsorio/buildah-assignment
+    workspaces:
+      - name: output
+        workspace: pipeline-shared-data
